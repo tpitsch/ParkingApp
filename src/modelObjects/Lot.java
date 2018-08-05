@@ -1,13 +1,13 @@
 package modelObjects;
 
-public class ParkingLot {
+public class Lot {
 	
 	private String name;
 	private String location;
 	private int cap;
 	private int floors;
 	
-	public ParkingLot(String name, String location, int cap, int floors) {
+	public Lot(String name, String location, int cap, int floors) {
 		this.name = name;
 		this.location = location;
 		this.cap = cap;
@@ -27,6 +27,18 @@ public class ParkingLot {
 	}
 	public int getFloors() {
 		return floors;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setLocation(String loc) {
+		location = loc;
+	}
+	public void setCapacity(int cap) {
+		this.cap = cap;
+	}
+	public void setFloors(int floors) {
+		this.floors = floors;
 	}
 	
 	

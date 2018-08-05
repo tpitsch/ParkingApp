@@ -1,22 +1,28 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import parkingDatabase.ParkingDB;
 
 public class GUIController extends Application{
 	
 	private Stage primaryStage;
-	@FXML AnchorPane appPane;
+	private ParkingDB db;
+	
+	@FXML GridPane gp;
 	
 	@Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
       this.primaryStage = primaryStage;
+      db = new ParkingDB();
       mainWindow();
     }
 	
@@ -52,8 +58,6 @@ public class GUIController extends Application{
 	    	 
 	    		Scene scene = new Scene(pane);
 	    		
-	    		//GUIController control = loader.getController();
-	    		//control.makeWindow(primaryStage,scene);
 	    		
 	    		primaryStage.setScene(scene);
 	    		primaryStage.show();

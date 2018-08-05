@@ -1,24 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GUIController">
    <children>
-      <VBox prefHeight="400.0" prefWidth="100.0">
-         <children>
-            <Pane prefHeight="404.0" prefWidth="100.0">
-               <children>
-                  <Button fx:id="al" layoutY="15.0" mnemonicParsing="false" onAction="#handleAddLot" prefHeight="50.0" prefWidth="100.0" text="Add Lot" />
-                  <Button layoutY="95.0" mnemonicParsing="false" onAction="#handleAddSpace" prefHeight="50.0" prefWidth="100.0" text="Add Space" />
-                  <Button layoutY="175.0" mnemonicParsing="false" onAction="#handleAddStaff" prefHeight="50.0" prefWidth="100.0" text="Add Staff" />
-                  <Button layoutY="255.0" mnemonicParsing="false" onAction="#handleUpdateInfo" prefHeight="50.0" prefWidth="100.0" text="Update Info" />
-                  <Button layoutY="335.0" mnemonicParsing="false" onAction="#handleReserve" prefHeight="50.0" prefWidth="100.0" text="Reserve" />
-               </children>
-            </Pane>
-         </children>
-      </VBox>
-      <AnchorPane fx:id="appPane" layoutX="100.0" prefHeight="406.0" prefWidth="505.0" />
+      <TabPane prefHeight="411.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Add Lot">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="293.0" mnemonicParsing="false" text="Add" />
+                        <VBox layoutX="300.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <TextField />
+                              <TextField />
+                              <TextField />
+                              <TextField />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="168.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Add Space">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="294.0" mnemonicParsing="false" text="Add" />
+                        <VBox layoutX="168.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="316.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <TextField />
+                              <TextField />
+                              <TextField />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Add Staff">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="293.0" mnemonicParsing="false" text="Add" />
+                        <VBox layoutX="316.0" layoutY="78.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <TextField />
+                              <TextField />
+                              <TextField />
+                              <TextField />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="168.0" layoutY="59.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Update Staff">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="289.0" mnemonicParsing="false" text="Update" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Assign Spot">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Reserve">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>
