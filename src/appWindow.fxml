@@ -19,6 +19,6 @@
             </Pane>
          </children>
       </VBox>
-      <ScrollPane layoutX="100.0" prefHeight="400.0" prefWidth="502.0" />
+      <AnchorPane fx:id="appPane" layoutX="100.0" prefHeight="406.0" prefWidth="505.0" />
    </children>
 </AnchorPane>
