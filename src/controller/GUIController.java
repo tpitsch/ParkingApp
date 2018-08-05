@@ -10,25 +10,21 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import modelObjects.Lot;
 import parkingDatabase.ParkingDB;
 
-public class GUIController extends Application{
+public class GUIController{
 	
-	private Stage primaryStage;
 	private ParkingDB db;
-	
-	@FXML GridPane gp;
-	
-	@Override
-    public void start(Stage primaryStage) throws SQLException {
-      this.primaryStage = primaryStage;
-      db = new ParkingDB();
-      mainWindow();
-    }
 	
 	@FXML
 	public void handleAddLot() {
-		System.out.println("adding new lot");
+		try {
+			
+			//db.addLot(l);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
@@ -50,25 +46,10 @@ public class GUIController extends Application{
 	public void handleReserve() {
 		System.out.println("reserving space");
 	}
-
-	 public void mainWindow() {
-	    	try {
-	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/appWindow.fxml"));
-	    		AnchorPane pane = loader.load();
-	    	 
-	    		Scene scene = new Scene(pane);
-	    		
-	    		
-	    		primaryStage.setScene(scene);
-	    		primaryStage.show();
-	    	}catch(IOException e) {
-	    		e.printStackTrace();
-	    	}
-	    
-	    }
-	    
-	 public static void main(String[] args) {
-	        launch(args);
-	    }
+	
+	public void makeComp(ParkingDB db) {
+		this.db = db;
 	}
+}
 
+	 

@@ -6,6 +6,7 @@ public class StaffSpace {
 	private int spaceNumber;
 	
 	public StaffSpace(int staffNumber, int spaceNumber) {
+		super();
 		this.staffNumber = staffNumber;
 		this.spaceNumber = spaceNumber;
 	}
