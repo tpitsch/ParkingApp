@@ -11,9 +11,9 @@ import modelObjects.Staff;
 
 public class ParkingDB {
 	
-	private static String userName = "***"; //TODO - Change to yours
-	private static String password = "***"; //TODO - Change to yours
-	private static String serverName = "cssgate.insttech.washington.edu"; //TODO - Change to yours
+	private static String userName = "tpitsch";
+	private static String password = "omRaic"; 
+	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
 	
@@ -30,7 +30,11 @@ public class ParkingDB {
 	}
 	
 	
-	
+	/**
+	 * Adds a lot to the database with the given user input.
+	 * @param lot the lot that needs to be added.
+	 * @throws Exception when SQL error occurs.
+	 */
 	public void addLot(Lot lot) throws Exception {
 		if (sConnection == null) {
 			createConnection();
@@ -50,9 +54,28 @@ public class ParkingDB {
 		}
 	}
 	
-	//TODO add statements to create new spaces in the database
-	public void addSpace(Space space) {
+	/**
+	 * Add a space to the database with user input.
+	 * @param space the space to be added
+	 * @throws SQLException
+	 */
+	public void addSpace(Space space) throws Exception {
+		if (sConnection == null) {
+			createConnection();
+		}
 		
+		String sql = "insert into Lot values " + "(?, ?, ?); ";
+		PreparedStatement ps = null;
+		
+		try {
+			ps = sConnection.prepareStatement(sql);
+			ps.setInt(1, space.getSpaceNumber());
+			ps.setString(2, space.getSpaceType());
+			ps.setString(3, space.getLotName());
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			throw new Exception("Unable to add new Space: " + e.getMessage());
+		}
 	}
 	
 	//TODO add statements to create new staff members to database
