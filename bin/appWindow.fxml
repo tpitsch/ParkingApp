@@ -38,15 +38,15 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="268.0" layoutY="294.0" mnemonicParsing="false" text="Add" />
+                        <Button layoutX="268.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleAddSpace" text="Add" />
                         <VBox layoutX="168.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Number" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Type" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" />
                            </children>
                         </VBox>
-                        <VBox layoutX="316.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
+                        <VBox fx:id="spaceBox" layoutX="316.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <TextField />
                               <TextField />
@@ -61,8 +61,8 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="268.0" layoutY="293.0" mnemonicParsing="false" text="Add" />
-                        <VBox layoutX="316.0" layoutY="78.0" prefHeight="200.0" prefWidth="100.0">
+                        <Button layoutX="268.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleAddStaff" text="Add" />
+                        <VBox fx:id="staffBox" layoutX="316.0" layoutY="78.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <TextField />
                               <TextField />
@@ -70,12 +70,12 @@
                               <TextField />
                            </children>
                         </VBox>
-                        <VBox layoutX="168.0" layoutY="59.0" prefHeight="200.0" prefWidth="100.0">
+                        <VBox layoutX="168.0" layoutY="78.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Extension" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="License" />
                            </children>
                         </VBox>
                      </children>
@@ -93,7 +93,22 @@
             </Tab>
             <Tab text="Assign Spot">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleAssignSpace" text="Assign" />
+                        <VBox layoutX="332.0" layoutY="68.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <TextField />
+                              <TextField />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="168.0" layoutY="75.0" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Number" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Number" />
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab text="Reserve">

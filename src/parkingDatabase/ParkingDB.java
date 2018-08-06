@@ -8,11 +8,12 @@ import java.sql.SQLException;
 import modelObjects.Lot;
 import modelObjects.Space;
 import modelObjects.Staff;
+import modelObjects.StaffSpace;
 
 public class ParkingDB {
 	
-	private static String userName = "tpitsch";
-	private static String password = "omRaic"; 
+	private static String userName = "***";
+	private static String password = "***"; 
 	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
@@ -50,7 +51,7 @@ public class ParkingDB {
 			ps.setInt(4, lot.getFloors());
 			ps.executeUpdate();
 		}catch(SQLException e) {
-			throw new Exception("Unable to add new Lot: " + e.getMessage());
+			//throw new Exception("Unable to add new Lot: " + e.getMessage());
 		}
 	}
 	
@@ -64,7 +65,7 @@ public class ParkingDB {
 			createConnection();
 		}
 		
-		String sql = "insert into Lot values " + "(?, ?, ?); ";
+		String sql = "insert into Space values " + "(?, ?, ?); ";
 		PreparedStatement ps = null;
 		
 		try {
@@ -74,13 +75,33 @@ public class ParkingDB {
 			ps.setString(3, space.getLotName());
 			ps.executeUpdate();
 		}catch(SQLException e) {
-			throw new Exception("Unable to add new Space: " + e.getMessage());
+			//throw new Exception("Unable to add new Space: " + e.getMessage());
 		}
 	}
 	
-	//TODO add statements to create new staff members to database
-	public void addStaff(Staff staff) {
+	/**
+	 * Adds a new staff member to the database
+	 * @param staff new staff member to add
+	 * @throws Exception
+	 */
+	public void addStaff(Staff staff) throws Exception {
+		if (sConnection == null) {
+			createConnection();
+		}
 		
+		String sql = "insert into Staff values " + "(?, ?, ?, ?); ";
+		PreparedStatement ps = null;
+		
+		try {
+			ps = sConnection.prepareStatement(sql);
+			ps.setString(1, staff.getStaffName());
+			ps.setString(2, staff.getStaffNumber());
+			ps.setString(3, staff.getExtension());
+			ps.setString(4, staff.getLicense());
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			//throw new Exception("Unable to add new Space: " + e.getMessage());
+		}
 	}
 	
 	//TODO add statements to update a staff member(only phone and license can be updated)
@@ -88,8 +109,19 @@ public class ParkingDB {
 		
 	}
 	
-	//TODO add statement to assign a space to a staff member
-	public void assignSpace() {
+	//TODO test if that space is already assigned first
+	public void assignSpace(StaffSpace staffSpace) throws Exception {
+		if (sConnection == null) {
+			createConnection();
+		}
+		
+		String sql = "insert into StaffSpace values " + "(?, ?); ";
+		PreparedStatement ps = null;
+		
+		ps = sConnection.prepareStatement(sql);
+		ps.setString(1, staffSpace.getStaffNumber());
+		ps.setInt(2, staffSpace.getSpaceNumber());
+		ps.executeUpdate();
 		
 	}
 	

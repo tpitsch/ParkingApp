@@ -2,23 +2,23 @@ package modelObjects;
 
 public class StaffSpace {
 
-	private int staffNumber;
+	private String staffNumber;
 	private int spaceNumber;
 	
-	public StaffSpace(int staffNumber, int spaceNumber) {
+	public StaffSpace(String staffNumber, int spaceNumber) {
 		super();
 		this.staffNumber = staffNumber;
 		this.spaceNumber = spaceNumber;
 	}
 	
 	
-	public int getStaffNumber() {
+	public String getStaffNumber() {
 		return staffNumber;
 	}
 	public int getSpaceNumber() {
 		return spaceNumber;
 	}
-	public void setStaffNumber(int staffNumber) {
+	public void setStaffNumber(String staffNumber) {
 		this.staffNumber = staffNumber;
 	}
 	public void setSpaceNumber(int spaceNumber) {

@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelObjects.Lot;
 import modelObjects.Space;
+import modelObjects.Staff;
+import modelObjects.StaffSpace;
 import parkingDatabase.ParkingDB;
 
 public class GUIController{
@@ -23,11 +25,12 @@ public class GUIController{
 	private ParkingDB db;
 	@FXML private VBox lotBox;
 	@FXML private VBox spaceBox;
+	@FXML private VBox staffBox;
 	
 	@FXML
 	public void handleAddLot() {
+		ObservableList<Node> ol = lotBox.getChildren();
 		try {
-			ObservableList<Node> ol = lotBox.getChildren();
 			
 			String name = ((TextField) ol.get(0)).getText();
 			String location = ((TextField) ol.get(1)).getText();
@@ -40,7 +43,7 @@ public class GUIController{
 			
 			clearFields(ol);
 		} catch (Exception e) {
-			e.printStackTrace();
+			clearFields(ol);
 		}
 	}
 	
@@ -48,7 +51,7 @@ public class GUIController{
 	public void handleAddSpace() {
 		ObservableList<Node> ol = spaceBox.getChildren();
 		
-		int spaceNumber = Integer.parseInt(((TextField) ol.get(3)).getText());
+		int spaceNumber = Integer.parseInt(((TextField) ol.get(0)).getText());
 		String spaceType = ((TextField) ol.get(1)).getText();
 		String lotName = ((TextField) ol.get(2)).getText();
 		
@@ -56,14 +59,52 @@ public class GUIController{
 		
 		try {
 			db.addSpace(s);
+			
+			clearFields(ol);
 		} catch (Exception e) {
-			e.printStackTrace();
+			clearFields(ol);
 		}
 		
 	}
 	
 	@FXML
 	public void handleAddStaff() {
+		ObservableList<Node> ol = staffBox.getChildren();
+		
+		String name = ((TextField) ol.get(0)).getText();
+		String number = ((TextField) ol.get(1)).getText();
+		String ext = ((TextField) ol.get(2)).getText();
+		String license = ((TextField) ol.get(3)).getText();
+		
+		Staff s = new Staff(name, number, ext, license);
+		
+		try {
+			db.addStaff(s);
+			
+			clearFields(ol);
+		} catch (Exception e) {
+			clearFields(ol);
+		}
+		
+	}
+	
+	@FXML
+	public void handleAssignSpace() {
+		
+		ObservableList<Node> ol = staffBox.getChildren();
+		
+		String empNum = ((TextField) ol.get(0)).getText();
+		int spaceNum = Integer.parseInt(((TextField) ol.get(1)).getText());
+		
+		StaffSpace ss = new StaffSpace(empNum, spaceNum);
+		
+		try {
+			db.assignSpace(ss);
+			
+			clearFields(ol);
+		} catch (Exception e) {
+			clearFields(ol);
+		}
 		
 	}
 	
@@ -76,6 +117,10 @@ public class GUIController{
 	public void handleReserve() {
 		System.out.println("reserving space");
 	}
+	
+	
+	
+	
 	
 	public void makeComp(ParkingDB db) {
 		this.db = db;
