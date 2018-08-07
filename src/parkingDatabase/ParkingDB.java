@@ -12,8 +12,8 @@ import modelObjects.StaffSpace;
 public class ParkingDB {
 	
 
-	private static String userName = "nrues";
-	private static String password = "nefJod";
+	private static String userName = "*";
+	private static String password = "*";
 	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
