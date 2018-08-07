@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GUIController">
    <children>
@@ -82,11 +84,26 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Update Staff">
+            <Tab onSelectionChanged="#updateStaffList" text="Update Staff">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="268.0" layoutY="289.0" mnemonicParsing="false" text="Update" />
+                        <Button fx:id="updateStaff" layoutX="524.0" layoutY="304.0" mnemonicParsing="false" onAction="#handleUpdateStaff" text="Update" />
+                        <TableView fx:id="staffTable" prefHeight="293.0" prefWidth="600.0">
+                          <columns>
+                            <TableColumn prefWidth="220.0" text="Name"> <cellValueFactory><PropertyValueFactory property="staffName" /></cellValueFactory></TableColumn>
+                            <TableColumn prefWidth="124.0" text="Staff #"> <cellValueFactory><PropertyValueFactory property="staffNumber" /></cellValueFactory></TableColumn>
+                              <TableColumn prefWidth="111.0" text="Extension"> <cellValueFactory><PropertyValueFactory property="ext" /></cellValueFactory></TableColumn>
+                              <TableColumn prefWidth="142.0" text="License #"> <cellValueFactory><PropertyValueFactory property="license" /></cellValueFactory></TableColumn>
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="idEntry" layoutX="33.0" layoutY="304.0" prefHeight="25.0" prefWidth="88.0" />
+                        <TextField fx:id="extEntry" layoutX="213.0" layoutY="304.0" prefHeight="25.0" prefWidth="99.0" />
+                        <TextField fx:id="licenseEntry" layoutX="394.0" layoutY="304.0" prefHeight="25.0" prefWidth="109.0" />
+                        <Label layoutX="15.0" layoutY="308.0" text="ID:" />
+                        <Label layoutX="130.0" layoutY="308.0" text="New Extension:" />
+                        <Label layoutX="322.0" layoutY="308.0" text="New License:" />
+                        <Label fx:id="invalidLabel" alignment="CENTER" layoutX="17.0" layoutY="336.0" prefHeight="17.0" prefWidth="120.0" text="Please enter a valid ID!" textFill="#f80606" underline="true" visible="false" />
                      </children>
                   </AnchorPane>
               </content>

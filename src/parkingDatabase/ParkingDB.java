@@ -1,9 +1,8 @@
 package parkingDatabase;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import modelObjects.Lot;
 import modelObjects.Space;
@@ -13,8 +12,8 @@ import modelObjects.StaffSpace;
 public class ParkingDB {
 	
 
-	private static String userName = "***";
-	private static String password = "***"; 
+	private static String userName = "nrues";
+	private static String password = "nefJod";
 	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
@@ -28,7 +27,6 @@ public class ParkingDB {
 	public static void createConnection() throws SQLException {
 		sConnection =  DriverManager
 				.getConnection("jdbc:mysql://" + serverName + "/" + userName + "?user=" + userName + "&password=" + password);
-		
 	}
 	
 	
@@ -97,17 +95,47 @@ public class ParkingDB {
 			ps = sConnection.prepareStatement(sql);
 			ps.setString(1, staff.getStaffName());
 			ps.setString(2, staff.getStaffNumber());
-			ps.setString(3, staff.getExtension());
+			ps.setString(3, staff.getExt());
 			ps.setString(4, staff.getLicense());
 			ps.executeUpdate();
 		}catch(SQLException e) {
 			//throw new Exception("Unable to add new Space: " + e.getMessage());
 		}
 	}
-	
-	//TODO add statements to update a staff member(only phone and license can be updated)
-	public void updateStaff(String phone, String licence) {
-		
+
+	/**
+	 * Updates a staff members license & phone number. If one parameter is blank, it will be unchanged.
+	 * @param id ID of the staff member to edit.
+	 * @param phone new phone number
+	 * @param license new license place number
+	 * @throws SQLException
+	 */
+	public void updateStaff(String id, String phone, String license) throws SQLException {
+		if (sConnection == null)	{
+			createConnection();
+		}
+		//Default sql statement case, both phone and license being updated
+		String sql = "UPDATE Staff SET telephoneExt = " + phone + ", vehicleLicenseNumber = " + license
+				+ " WHERE staffNumber = " + id;
+		if(phone.equals("") && license.equals("")) {
+			//phone and license blank, update nothing.
+			return;
+		} else if (phone.equals(""))	{
+			//Phone is blank, update license
+			sql = "UPDATE Staff SET vehicleLicenseNumber = " + license + "WHERE staffNumber = " + id;
+		} else if (license.equals("")) {
+			//License is blank, update phone
+			sql = "UPDATE Staff SET telephoneExt = " + phone + " WHERE staffNumber = " + id;
+		}
+		PreparedStatement ps = null;
+		try {
+			ps = sConnection.prepareStatement(sql);
+			//ps.setString(1, phone);
+			//ps.setString(2, license);
+			ps.executeUpdate();
+		}	catch(SQLException e)	{
+
+		}
 	}
 	
 	//TODO test if that space is already assigned first
@@ -129,6 +157,41 @@ public class ParkingDB {
 	//TODO add statements to allow staff to reserve a space for a visitor
 	public void reserveSpace() {
 		
+	}
+
+	/**
+	 * Gets a list of all staff in the database. Used to populate the tableview.
+	 * (Copied and edited from Menaka Abraham's movie example)
+	 * @return list of staff in database
+	 * @throws Exception
+	 */
+	public List<Staff> getStaff() throws Exception {
+		if(sConnection == null)	{
+			createConnection();
+		}
+		Statement stmt = null;
+		String query = "SELECT staffName, staffNumber, telephoneExt, vehicleLicenseNumber FROM Staff";
+		List<Staff> staff = new ArrayList<Staff>();
+		try {
+			stmt = sConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				String name = rs.getString("staffName");
+				int number = rs.getInt("staffNumber");
+				int tele = rs.getInt("telephoneExt");
+				String license = rs.getString("vehicleLicenseNumber");
+				Staff s = new Staff(name, Integer.toString(number), Integer.toString(tele), license);		//I don't like that I have to cast the numbers to strings
+				staff.add(s);
+			}
+		}	catch (SQLException e)	{
+			e.printStackTrace();
+			throw new Exception("Unable to retrieve staff list: " + e.getMessage());
+		}	finally {
+			if (stmt != null)	{
+				stmt.close();
+			}
+		}
+		return staff;
 	}
 	
 }

@@ -21,7 +21,7 @@ public class Staff {
 	public String getStaffNumber() {
 		return staffNumber;
 	}
-	public String getExtension() {
+	public String getExt() {
 		return ext;
 	}
 	public String getLicense() {
