@@ -12,8 +12,8 @@ import modelObjects.StaffSpace;
 public class ParkingDB {
 	
 
-	private static String userName = "nrues";
-	private static String password = "nefJod";
+	private static String userName = "*";
+	private static String password = "*";
 	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
@@ -115,14 +115,14 @@ public class ParkingDB {
 			createConnection();
 		}
 		//Default sql statement case, both phone and license being updated
-		String sql = "UPDATE Staff SET telephoneExt = " + phone + ", vehicleLicenseNumber = " + license
-				+ " WHERE staffNumber = " + id;
+		String sql = "UPDATE Staff SET telephoneExt = " + phone + ", vehicleLicenseNumber = '" + license
+				+ "' WHERE staffNumber = " + id;
 		if(phone.equals("") && license.equals("")) {
 			//phone and license blank, update nothing.
 			return;
 		} else if (phone.equals(""))	{
 			//Phone is blank, update license
-			sql = "UPDATE Staff SET vehicleLicenseNumber = " + license + "WHERE staffNumber = " + id;
+			sql = "UPDATE Staff SET vehicleLicenseNumber = '" + license + "' WHERE staffNumber = " + id;
 		} else if (license.equals("")) {
 			//License is blank, update phone
 			sql = "UPDATE Staff SET telephoneExt = " + phone + " WHERE staffNumber = " + id;
@@ -139,24 +139,60 @@ public class ParkingDB {
 	}
 	
 	//TODO test if that space is already assigned first
-	public void assignSpace(StaffSpace staffSpace) throws Exception {
+	public boolean assignSpace(StaffSpace staffSpace) throws Exception {
 		if (sConnection == null) {
 			createConnection();
 		}
-		
-		String sql = "insert into StaffSpace values " + "(?, ?); ";
-		PreparedStatement ps = null;
-		
-		ps = sConnection.prepareStatement(sql);
-		ps.setString(1, staffSpace.getStaffNumber());
-		ps.setInt(2, staffSpace.getSpaceNumber());
-		ps.executeUpdate();
-		
+		List<Space> available = getAvailableSpaces();
+		boolean freeSpot = false;
+		for(Space s : available)	{
+			if(s.getSpaceNumber() == staffSpace.getSpaceNumber())	{
+				freeSpot = true;
+				break;
+			}
+		}
+		if(freeSpot) {
+			String sql = "insert into StaffSpace values " + "(?, ?); ";
+			PreparedStatement ps = null;
+
+			ps = sConnection.prepareStatement(sql);
+			ps.setString(1, staffSpace.getStaffNumber());
+			ps.setInt(2, staffSpace.getSpaceNumber());
+			ps.executeUpdate();
+			return true;
+		}
+		return false;
 	}
 	
 	//TODO add statements to allow staff to reserve a space for a visitor
 	public void reserveSpace() {
 		
+	}
+
+	public List<Space> getAvailableSpaces() throws SQLException {
+		if(sConnection == null)	{
+			createConnection();
+		}
+		List<Space> space = new ArrayList<Space>();
+		Statement stmt = null;
+		String query = "SELECT spaceNumber, lotName FROM Space WHERE spaceNumber NOT IN (SELECT spaceNumber FROM StaffSpace)";
+		try {
+			stmt = sConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())	{
+				int spaceNo = rs.getInt("spaceNumber");
+				String lot = rs.getString("lotName");
+				Space s = new Space(spaceNo, "staffSpace", lot);
+				space.add(s);
+			}
+		} catch (Exception e)	{
+
+		} finally {
+			if(stmt != null)	{
+				stmt.close();
+			}
+		}
+		return space;
 	}
 
 	/**
