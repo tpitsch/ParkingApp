@@ -12,10 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -33,12 +30,18 @@ public class GUIController{
 	@FXML private VBox spaceBox;
 	@FXML private VBox staffBox;
 
-
+	//"Update Staff" tab components:
     @FXML private TextField idEntry;
     @FXML private TextField extEntry;
     @FXML private TextField licenseEntry;
 	@FXML private TableView<Staff> staffTable = new TableView<Staff>();
 	@FXML private Label invalidLabel;
+
+	//"Assign Spot" tab components:
+	@FXML private TableView<Space> spaceTable = new TableView<Space>();
+	@FXML private TextField assignStaffNo;
+	@FXML private TextField assignSpaceNo;
+	@FXML private Label spaceTaken;
 
     /**
      *
@@ -46,6 +49,27 @@ public class GUIController{
      */
 	public void initialize() throws Exception {
 	    updateStaffList();
+	    updateSpaceList();
+	    //Added functionality of double clicking a tableview row to get that ID into the ID entry box in "Update Staff":
+	    staffTable.setRowFactory(select ->		{
+	    	TableRow<Staff> row = new TableRow<>();
+	    	row.setOnMouseClicked(event ->	{
+	    		if(event.getClickCount() == 2 && (!row.isEmpty()))	{
+	    			idEntry.setText(row.getItem().getStaffNumber());
+				}
+			});
+	    	return row;
+		});
+	    //Same functionality for the table in "Assign Spot" for the space number:
+		spaceTable.setRowFactory(select ->		{
+			TableRow<Space> row = new TableRow<>();
+			row.setOnMouseClicked(event ->	{
+				if(event.getClickCount() == 2 && (!row.isEmpty()))	{
+					assignSpaceNo.setText(Integer.toString(row.getItem().getSpaceNumber()));
+				}
+			});
+			return row;
+		});
     }
 
     /**
@@ -62,6 +86,17 @@ public class GUIController{
             }
         }
     }
+
+    @FXML
+	public void updateSpaceList() throws SQLException {
+    	List<Space> space = db.getAvailableSpaces();
+    	spaceTable.getItems().clear();
+    	for(Space s : space)	{
+    		if(s != null)	{
+    			spaceTable.getItems().add(s);
+			}
+		}
+	}
 	
 	@FXML
 	public void handleAddLot() {
@@ -125,23 +160,17 @@ public class GUIController{
 	}
 	
 	@FXML
-	public void handleAssignSpace() {
-		
-		ObservableList<Node> ol = staffBox.getChildren();
-		
-		String empNum = ((TextField) ol.get(0)).getText();
-		int spaceNum = Integer.parseInt(((TextField) ol.get(1)).getText());
-		
+	public void handleAssignSpace() throws SQLException {
+		String empNum = assignStaffNo.getText();
+		int spaceNum = Integer.parseInt(assignSpaceNo.getText());
 		StaffSpace ss = new StaffSpace(empNum, spaceNum);
-		
 		try {
-			db.assignSpace(ss);
-			
-			clearFields(ol);
+			spaceTaken.setVisible(!db.assignSpace(ss));
 		} catch (Exception e) {
-			clearFields(ol);
 		}
-		
+		assignStaffNo.clear();
+		assignSpaceNo.clear();
+		updateSpaceList();
 	}
 
 	@FXML
@@ -154,6 +183,7 @@ public class GUIController{
         for(Staff s : staffTable.getItems())    {
             if(s.getStaffNumber().equals(id))    {
                 idExists = true;
+                break;
             }
         }
         if(idExists) {
@@ -178,9 +208,6 @@ public class GUIController{
 		System.out.println("reserving space");
 	}
 
-	public void makeComp(ParkingDB db) {
-		this.db = db;
-	}
 
 	private void clearFields(ObservableList<Node> l) {
 		for(int i = 0; i<l.size();i++) {
