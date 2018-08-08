@@ -112,19 +112,19 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="268.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleAssignSpace" text="Assign" />
-                        <VBox layoutX="332.0" layoutY="68.0" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <TextField />
-                              <TextField />
-                           </children>
-                        </VBox>
-                        <VBox layoutX="168.0" layoutY="75.0" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Number" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Number" />
-                           </children>
-                        </VBox>
+                        <Button layoutX="284.0" layoutY="266.0" mnemonicParsing="false" onAction="#handleAssignSpace" text="Assign" />
+                        <TableView fx:id="spaceTable" layoutX="400.0" prefHeight="371.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn prefWidth="92.0" text="Space"> <cellValueFactory><PropertyValueFactory property="spaceNumber" /></cellValueFactory></TableColumn>
+                            <TableColumn prefWidth="104.0" text="Lot"> <cellValueFactory><PropertyValueFactory property="lotName" /></cellValueFactory></TableColumn>
+                          </columns>
+                        </TableView>
+                        <Label layoutX="300.0" layoutY="50.0" text="Available Spaces:" />
+                        <TextField fx:id="assignStaffNo" layoutX="108.0" layoutY="241.0" prefHeight="25.0" prefWidth="123.0" />
+                        <TextField fx:id="assignSpaceNo" layoutX="108.0" layoutY="295.0" prefHeight="25.0" prefWidth="123.0" />
+                        <Label layoutX="27.0" layoutY="245.0" text="Staff Number:" />
+                        <Label layoutX="20.0" layoutY="299.0" text="Space Number:" />
+                        <Label fx:id="spaceTaken" layoutX="108.0" layoutY="329.0" text="Space does not exist or is taken." textFill="#ee0303" visible="false" />
                      </children></AnchorPane>
               </content>
             </Tab>
