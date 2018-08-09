@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GUIController">
    <children>
@@ -82,11 +84,26 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Update Staff">
+            <Tab onSelectionChanged="#updateStaffList" text="Update Staff">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="268.0" layoutY="289.0" mnemonicParsing="false" text="Update" />
+                        <Button fx:id="updateStaff" layoutX="524.0" layoutY="304.0" mnemonicParsing="false" onAction="#handleUpdateStaff" text="Update" />
+                        <TableView fx:id="staffTable" prefHeight="293.0" prefWidth="600.0">
+                          <columns>
+                            <TableColumn prefWidth="220.0" text="Name"> <cellValueFactory><PropertyValueFactory property="staffName" /></cellValueFactory></TableColumn>
+                            <TableColumn prefWidth="124.0" text="Staff #"> <cellValueFactory><PropertyValueFactory property="staffNumber" /></cellValueFactory></TableColumn>
+                              <TableColumn prefWidth="111.0" text="Extension"> <cellValueFactory><PropertyValueFactory property="ext" /></cellValueFactory></TableColumn>
+                              <TableColumn prefWidth="142.0" text="License #"> <cellValueFactory><PropertyValueFactory property="license" /></cellValueFactory></TableColumn>
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="idEntry" layoutX="33.0" layoutY="304.0" prefHeight="25.0" prefWidth="88.0" />
+                        <TextField fx:id="extEntry" layoutX="213.0" layoutY="304.0" prefHeight="25.0" prefWidth="99.0" />
+                        <TextField fx:id="licenseEntry" layoutX="394.0" layoutY="304.0" prefHeight="25.0" prefWidth="109.0" />
+                        <Label layoutX="15.0" layoutY="308.0" text="ID:" />
+                        <Label layoutX="130.0" layoutY="308.0" text="New Extension:" />
+                        <Label layoutX="322.0" layoutY="308.0" text="New License:" />
+                        <Label fx:id="invalidLabel" alignment="CENTER" layoutX="17.0" layoutY="336.0" prefHeight="17.0" prefWidth="120.0" text="Please enter a valid ID!" textFill="#f80606" underline="true" visible="false" />
                      </children>
                   </AnchorPane>
               </content>
@@ -95,25 +112,28 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="268.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleAssignSpace" text="Assign" />
-                        <VBox layoutX="332.0" layoutY="68.0" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <TextField />
-                              <TextField />
-                           </children>
-                        </VBox>
-                        <VBox layoutX="168.0" layoutY="75.0" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Number" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Number" />
-                           </children>
-                        </VBox>
+                        <Button layoutX="284.0" layoutY="266.0" mnemonicParsing="false" onAction="#handleAssignSpace" text="Assign" />
+                        <TableView fx:id="spaceTable" layoutX="400.0" prefHeight="371.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn prefWidth="92.0" text="Space"> <cellValueFactory><PropertyValueFactory property="spaceNumber" /></cellValueFactory></TableColumn>
+                            <TableColumn prefWidth="104.0" text="Lot"> <cellValueFactory><PropertyValueFactory property="lotName" /></cellValueFactory></TableColumn>
+                          </columns>
+                        </TableView>
+                        <Label layoutX="300.0" layoutY="50.0" text="Available Spaces:" />
+                        <TextField fx:id="assignStaffNo" layoutX="108.0" layoutY="241.0" prefHeight="25.0" prefWidth="123.0" />
+                        <TextField fx:id="assignSpaceNo" layoutX="108.0" layoutY="295.0" prefHeight="25.0" prefWidth="123.0" />
+                        <Label layoutX="27.0" layoutY="245.0" text="Staff Number:" />
+                        <Label layoutX="20.0" layoutY="299.0" text="Space Number:" />
+                        <Label fx:id="spaceTaken" layoutX="108.0" layoutY="329.0" text="Space does not exist or is taken." textFill="#ee0303" visible="false" />
                      </children></AnchorPane>
               </content>
             </Tab>
             <Tab text="Reserve">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleReserve" text="Reserve" />
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>

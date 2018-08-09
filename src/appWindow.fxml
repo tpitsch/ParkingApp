@@ -130,7 +130,25 @@
             </Tab>
             <Tab text="Reserve">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="133.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleReserve" text="Reserve" />
+                        <TableView layoutX="340.0" prefHeight="361.0" prefWidth="207.0">
+                          <columns>
+                            <TableColumn prefWidth="206.0" text="Space Number" />
+                          </columns>
+                        </TableView>
+                        <Text layoutX="63.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Booking ID" />
+                        <Text layoutX="51.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Space Number" />
+                        <Text layoutX="50.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Number" />
+                        <Text layoutX="54.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VisitorLicense" />
+                        <Text layoutX="86.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
+                        <TextField layoutX="154.0" layoutY="34.0" prefHeight="31.0" prefWidth="184.0" />
+                        <TextField layoutX="153.0" layoutY="89.0" />
+                        <TextField layoutX="152.0" layoutY="134.0" />
+                        <TextField layoutX="153.0" layoutY="191.0" />
+                        <TextField layoutX="153.0" layoutY="246.0" />
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
