@@ -130,7 +130,10 @@
             </Tab>
             <Tab text="Reserve">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="268.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleReserve" text="Reserve" />
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>

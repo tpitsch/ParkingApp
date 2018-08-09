@@ -26,7 +26,7 @@ public class MainWindow extends Application{
     	 
     		GUIController cont = loader.getController();
     		db = new ParkingDB();
-    		cont.makeComp(db);
+    		//cont.makeComp(db);
     		
     		Scene scene = new Scene(pane);
     		

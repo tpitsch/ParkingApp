@@ -4,8 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelObjects.CoveredSpace;
 import modelObjects.Lot;
 import modelObjects.Space;
+import modelObjects.SpaceBooking;
 import modelObjects.Staff;
 import modelObjects.StaffSpace;
 
@@ -165,7 +167,55 @@ public class ParkingDB {
 	}
 	
 	//TODO add statements to allow staff to reserve a space for a visitor
-	public void reserveSpace() {
+	public void reserveSpace(SpaceBooking sb) throws SQLException {
+		if(sConnection == null)	{
+			createConnection();
+		}
+		Statement stmt = null;
+		String query = "SELECT COUNT(*) as res FROM SpaceBooking";
+		try {
+			stmt = sConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			if(rs.getInt("res") < 20) {
+				//make space booking sql 
+			}
+			
+		} catch (Exception e)	{
+
+		} finally {
+			if(stmt != null)	{
+				stmt.close();
+			}
+		}
+		
+		
+	}
+	
+	public List<Integer> getAvaiableCoveredSpaces() throws SQLException{
+		if(sConnection == null)	{
+			createConnection();
+		}
+		List<Integer> space = new ArrayList<Integer>();
+		Statement stmt = null;
+		String query = "SELECT spaceNumber FROM Space WHERE spaceType = \"CoveredSpace\" AND " +
+								"spaceNumber NOT IN (SELECT spaceNumber FROM SpaceBooking)";
+		try {
+			stmt = sConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())	{
+				int spaceNo = rs.getInt("spaceNumber");
+				space.add(spaceNo);
+			}
+		} catch (Exception e)	{
+
+		} finally {
+			if(stmt != null)	{
+				stmt.close();
+			}
+		}
+		return space;
+		
 		
 	}
 

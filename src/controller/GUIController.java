@@ -198,14 +198,11 @@ public class GUIController{
         }
     }
 	
-	@FXML
-	public void handleUpdateInfo() {
-		System.out.println("update info");
-	}
 	
 	@FXML
-	public void handleReserve() {
-		System.out.println("reserving space");
+	public void handleReserve() throws SQLException {
+		//make a new booking
+		db.reserveSpace();
 	}
 
 
