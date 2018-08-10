@@ -17,10 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import modelObjects.Lot;
-import modelObjects.Space;
-import modelObjects.Staff;
-import modelObjects.StaffSpace;
+import modelObjects.*;
 import parkingDatabase.ParkingDB;
 
 public class GUIController{
@@ -43,6 +40,15 @@ public class GUIController{
 	@FXML private TextField assignSpaceNo;
 	@FXML private Label spaceTaken;
 
+	//"Reserve" tab components:
+	@FXML private TableView<CoveredSpace> freeSpaceTable = new TableView<CoveredSpace>();
+	@FXML private TextField bookingId;
+	@FXML private DatePicker reserveDate;
+	@FXML private TextField reserveSpace;
+	@FXML private TextField reserveStaff;
+	@FXML private TextField reserveLic;
+	@FXML private Label reserveTaken;
+
     /**
      *
      * @throws Exception
@@ -50,6 +56,7 @@ public class GUIController{
 	public void initialize() throws Exception {
 	    updateStaffList();
 	    updateSpaceList();
+	    updateFreeCoveredSpots();
 	    //Added functionality of double clicking a tableview row to get that ID into the ID entry box in "Update Staff":
 	    staffTable.setRowFactory(select ->		{
 	    	TableRow<Staff> row = new TableRow<>();
@@ -197,12 +204,40 @@ public class GUIController{
             invalidLabel.setVisible(true);
         }
     }
+
+    public void updateFreeCoveredSpots() throws SQLException {
+    	List<CoveredSpace> free = db.getAvailableCoveredSpaces();
+    	freeSpaceTable.getItems().clear();
+    	for(CoveredSpace cs : free)	{
+    		if(cs != null)	{
+    			freeSpaceTable.getItems().add(cs);
+			}
+		}
+		bookingId.setText(Integer.toString(db.getNextBookingID()));
+	}
 	
 	
 	@FXML
 	public void handleReserve() throws SQLException {
 		//make a new booking
-		db.reserveSpace();
+		//db.reserveSpace();
+		String date = reserveDate.getValue().toString();
+		date.replace("/","-");
+		int space = Integer.parseInt(reserveSpace.getText());
+		boolean taken = true;
+		for(CoveredSpace cs : freeSpaceTable.getItems())	{
+			if(space == cs.getSpaceNumber())	{
+				taken = false;
+				break;
+			}
+		}
+		if(!taken)	{
+			SpaceBooking sb = new SpaceBooking(Integer.parseInt(bookingId.getText()), space,
+					Integer.parseInt(reserveStaff.getText()), reserveLic.getText(), date);
+			db.reserveSpace(sb);
+		}
+		reserveTaken.setVisible(taken);
+		updateFreeCoveredSpots();
 	}
 
 

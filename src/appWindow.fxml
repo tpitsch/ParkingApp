@@ -133,9 +133,9 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Button layoutX="133.0" layoutY="303.0" mnemonicParsing="false" onAction="#handleReserve" text="Reserve" />
-                        <TableView layoutX="340.0" prefHeight="361.0" prefWidth="207.0">
+                        <TableView fx:id="freeSpaceTable" layoutX="340.0" prefHeight="361.0" prefWidth="207.0">
                           <columns>
-                            <TableColumn prefWidth="206.0" text="Space Number" />
+                            <TableColumn prefWidth="206.0" text="Space Number"> <cellValueFactory><PropertyValueFactory property="spaceNumber" /></cellValueFactory></TableColumn>
                           </columns>
                         </TableView>
                         <Text layoutX="63.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Booking ID" />
@@ -143,11 +143,12 @@
                         <Text layoutX="50.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Staff Number" />
                         <Text layoutX="54.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VisitorLicense" />
                         <Text layoutX="86.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
-                        <TextField layoutX="154.0" layoutY="34.0" prefHeight="31.0" prefWidth="184.0" />
-                        <TextField layoutX="153.0" layoutY="89.0" />
-                        <TextField layoutX="152.0" layoutY="134.0" />
-                        <TextField layoutX="153.0" layoutY="191.0" />
-                        <TextField layoutX="153.0" layoutY="246.0" />
+                        <TextField fx:id="bookingId" editable="false" layoutX="154.0" layoutY="34.0" prefHeight="31.0" prefWidth="184.0" />
+                        <TextField fx:id="reserveSpace" layoutX="153.0" layoutY="89.0" />
+                        <TextField fx:id="reserveStaff" layoutX="152.0" layoutY="134.0" />
+                        <TextField fx:id="reserveLic" layoutX="153.0" layoutY="191.0" />
+                        <DatePicker fx:id="reserveDate" layoutX="141.0" layoutY="250.0" />
+                        <Label fx:id="reserveTaken" layoutX="92.0" layoutY="337.0" text="Space unable to be reserved." textFill="#ee0000" underline="true" visible="false" />
                      </children></AnchorPane>
               </content>
             </Tab>

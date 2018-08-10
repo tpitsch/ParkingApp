@@ -14,8 +14,8 @@ import modelObjects.StaffSpace;
 public class ParkingDB {
 	
 
-	private static String userName = "tpitsch";
-	private static String password = "omRaic";
+	private static String userName = "*";
+	private static String password = "*";
 	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
@@ -177,8 +177,18 @@ public class ParkingDB {
 			stmt = sConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
+			//NEED TO CHECK RESERVATIONS PER DATE!
 			if(rs.getInt("res") < 20) {
-				//make space booking sql 
+				//make space booking sql
+				rs.close();
+				query = "INSERT INTO SpaceBooking VALUES (?, ?, ?, ?, ?) ";
+				PreparedStatement ps = sConnection.prepareStatement(query);
+				ps.setInt(1, sb.getBookingID());
+				ps.setInt(2, sb.getSpaceNumber());
+				ps.setInt(3, sb.getStaffNumber());
+				ps.setString(4, sb.getVisitorLicense());
+				ps.setString(5, sb.getDateOfVisit());
+				ps.executeUpdate();
 			}
 			
 		} catch (Exception e)	{
@@ -192,11 +202,11 @@ public class ParkingDB {
 		
 	}
 	
-	public List<Integer> getAvaiableCoveredSpaces() throws SQLException{
+	public List<CoveredSpace> getAvailableCoveredSpaces() throws SQLException{
 		if(sConnection == null)	{
 			createConnection();
 		}
-		List<Integer> space = new ArrayList<Integer>();
+		List<CoveredSpace> space = new ArrayList<CoveredSpace>();
 		Statement stmt = null;
 		String query = "SELECT spaceNumber FROM Space WHERE spaceType = \"CoveredSpace\" AND " +
 								"spaceNumber NOT IN (SELECT spaceNumber FROM SpaceBooking)";
@@ -205,7 +215,7 @@ public class ParkingDB {
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next())	{
 				int spaceNo = rs.getInt("spaceNumber");
-				space.add(spaceNo);
+				space.add(new CoveredSpace(spaceNo, 0));
 			}
 		} catch (Exception e)	{
 
@@ -278,6 +288,28 @@ public class ParkingDB {
 			}
 		}
 		return staff;
+	}
+
+	public int getNextBookingID() throws SQLException {
+		if(sConnection == null)	{
+			createConnection();
+		}
+		Statement stmt = null;
+		String query = "SELECT COUNT(*) FROM SpaceBooking";
+		int count = 0;
+		try {
+			stmt = sConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			count = rs.getInt(1);
+		} catch (Exception e)	{
+
+		} finally {
+			if (stmt != null)	{
+				stmt.close();
+			}
+		}
+		return count + 1;
 	}
 	
 }
