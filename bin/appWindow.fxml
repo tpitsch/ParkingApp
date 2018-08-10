@@ -19,17 +19,17 @@
                         <VBox fx:id="lotBox" layoutX="300.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <TextField />
-                              <TextField />
-                              <TextField />
-                              <TextField />
+                              <TextField translateY="10.0" />
+                              <TextField translateY="25.0" />
+                              <TextField translateY="40.0" />
                            </children>
                         </VBox>
                         <VBox layoutX="168.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Location" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Capacity" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Floors" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" translateY="5.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Location" translateY="25.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Capacity" translateY="50.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Floors" translateY="75.0" />
                            </children>
                         </VBox>
                      </children>
