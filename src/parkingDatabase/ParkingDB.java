@@ -11,12 +11,21 @@ import modelObjects.SpaceBooking;
 import modelObjects.Staff;
 import modelObjects.StaffSpace;
 
+/**
+ * A class for our application to access a database.
+ */
 public class ParkingDB {
 	
+	/** The username to login to the database. */
+	private static String userName = "*";
 
-	private static String userName = "tpitsch";
-	private static String password = "omRaic";
-	private static String serverName = "cssgate.insttech.washington.edu"; 
+	/** The password to login to your database. */
+	private static String password = "*";
+
+	/** The server name to login to your database. */
+	private static String serverName = "cssgate.insttech.washington.edu";
+
+	/** The connection to the database. Used to perform actions on the connected database. */
 	private static Connection sConnection;
 
 	
@@ -43,15 +52,12 @@ public class ParkingDB {
 		}
 		String sql = "insert into Lot values " + "(?, ?, ?, ?); ";
 		PreparedStatement ps = null;
-		
-			ps = sConnection.prepareStatement(sql);
-			ps.setString(1, lot.getName());
-			ps.setString(2, lot.getLocation());
-			ps.setInt(3,lot.getCapacity());
-			ps.setInt(4, lot.getFloors());
-			ps.executeUpdate();
-			
-		
+		ps = sConnection.prepareStatement(sql);
+		ps.setString(1, lot.getName());
+		ps.setString(2, lot.getLocation());
+		ps.setInt(3,lot.getCapacity());
+		ps.setInt(4, lot.getFloors());
+		ps.executeUpdate();
 	}
 	
 	/**
@@ -63,16 +69,13 @@ public class ParkingDB {
 		if (sConnection == null) {
 			createConnection();
 		}
-		
 		String sql = "insert into Space values " + "(?, ?, ?); ";
 		PreparedStatement ps = null;
-		
-			ps = sConnection.prepareStatement(sql);
-			ps.setInt(1, space.getSpaceNumber());
-			ps.setString(2, space.getSpaceType());
-			ps.setString(3, space.getLotName());
-			ps.executeUpdate();
-		
+		ps = sConnection.prepareStatement(sql);
+		ps.setInt(1, space.getSpaceNumber());
+		ps.setString(2, space.getSpaceType());
+		ps.setString(3, space.getLotName());
+		ps.executeUpdate();
 	}
 	
 	/**
@@ -84,17 +87,14 @@ public class ParkingDB {
 		if (sConnection == null) {
 			createConnection();
 		}
-		
 		String sql = "insert into Staff values " + "(?, ?, ?, ?); ";
 		PreparedStatement ps = null;
-		
-			ps = sConnection.prepareStatement(sql);
-			ps.setString(1, staff.getStaffName());
-			ps.setString(2, staff.getStaffNumber());
-			ps.setString(3, staff.getExt());
-			ps.setString(4, staff.getLicense());
-			ps.executeUpdate();
-		
+		ps = sConnection.prepareStatement(sql);
+		ps.setString(1, staff.getStaffName());
+		ps.setString(2, staff.getStaffNumber());
+		ps.setString(3, staff.getExt());
+		ps.setString(4, staff.getLicense());
+		ps.executeUpdate();
 	}
 
 	/**
@@ -122,10 +122,8 @@ public class ParkingDB {
 			sql = "UPDATE Staff SET telephoneExt = " + phone + " WHERE staffNumber = " + id;
 		}
 		PreparedStatement ps = null;
-		
-			ps = sConnection.prepareStatement(sql);
-			ps.executeUpdate();
-		
+		ps = sConnection.prepareStatement(sql);
+		ps.executeUpdate();
 	}
 
 
@@ -144,7 +142,6 @@ public class ParkingDB {
 		if(freeSpot) {
 			String sql = "insert into StaffSpace values " + "(?, ?); ";
 			PreparedStatement ps = null;
-
 			ps = sConnection.prepareStatement(sql);
 			ps.setString(1, staffSpace.getStaffNumber());
 			ps.setInt(2, staffSpace.getSpaceNumber());
@@ -161,31 +158,31 @@ public class ParkingDB {
 		}
 		Statement stmt = null;
 		String query = "SELECT COUNT(*) as res FROM SpaceBooking";
-		
-			stmt = sConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			rs.next();
-			//NEED TO CHECK RESERVATIONS PER DATE!
-			if(rs.getInt("res") < 20) {
-				//make space booking sql
-				rs.close();
-				query = "INSERT INTO SpaceBooking VALUES (?, ?, ?, ?, ?) ";
-				PreparedStatement ps = sConnection.prepareStatement(query);
-				ps.setInt(1, sb.getBookingID());
-				ps.setInt(2, sb.getSpaceNumber());
-				ps.setInt(3, sb.getStaffNumber());
-				ps.setString(4, sb.getVisitorLicense());
-				ps.setString(5, sb.getDateOfVisit());
-				ps.executeUpdate();
-			}
-			if(stmt != null)	{
-				stmt.close();
-			}
-		
-		
-		
+		stmt = sConnection.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		rs.next();
+		if(rs.getInt("res") < 20) {
+			//make space booking sql
+			rs.close();
+			query = "INSERT INTO SpaceBooking VALUES (?, ?, ?, ?, ?) ";
+			PreparedStatement ps = sConnection.prepareStatement(query);
+			ps.setInt(1, sb.getBookingID());
+			ps.setInt(2, sb.getSpaceNumber());
+			ps.setInt(3, sb.getStaffNumber());
+			ps.setString(4, sb.getVisitorLicense());
+			ps.setString(5, sb.getDateOfVisit());
+			ps.executeUpdate();
+		}
+		if(stmt != null)	{
+			stmt.close();
+		}
 	}
-	
+
+	/**
+	 * Gets covered spaces from the database that are not assigned to anyone. Used to populate tableview
+	 * @return A list of covered spaces currently not in use
+	 * @throws SQLException database error
+	 */
 	public List<CoveredSpace> getAvailableCoveredSpaces() throws SQLException{
 		if(sConnection == null)	{
 			createConnection();
@@ -211,6 +208,11 @@ public class ParkingDB {
 		
 	}
 
+	/**
+	 * Gets a list of ALL available spaces. Used to populate tableview
+	 * @return a list of all available spaces
+	 * @throws SQLException Database error
+	 */
 	public List<Space> getAvailableSpaces() throws SQLException {
 		if(sConnection == null)	{
 			createConnection();
@@ -250,24 +252,27 @@ public class ParkingDB {
 		Statement stmt = null;
 		String query = "SELECT staffName, staffNumber, telephoneExt, vehicleLicenseNumber FROM Staff";
 		List<Staff> staff = new ArrayList<Staff>();
-
-			stmt = sConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()) {
-				String name = rs.getString("staffName");
-				int number = rs.getInt("staffNumber");
-				int tele = rs.getInt("telephoneExt");
-				String license = rs.getString("vehicleLicenseNumber");
-				Staff s = new Staff(name, Integer.toString(number), Integer.toString(tele), license);		//I don't like that I have to cast the numbers to strings
-				staff.add(s);
-			}
-			if (stmt != null)	{
-				stmt.close();
-			}
-		
+		stmt = sConnection.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		while(rs.next()) {
+			String name = rs.getString("staffName");
+			int number = rs.getInt("staffNumber");
+			int tele = rs.getInt("telephoneExt");
+			String license = rs.getString("vehicleLicenseNumber");
+			Staff s = new Staff(name, Integer.toString(number), Integer.toString(tele), license);		//I don't like that I have to cast the numbers to strings
+			staff.add(s);
+		}
+		if (stmt != null)	{
+			stmt.close();
+		}
 		return staff;
 	}
 
+	/**
+	 * Gets the next available booking ID. This allows the ID to be automatically generated for the user
+	 * @return the next booking ID that should be used
+	 * @throws SQLException database error.
+	 */
 	public int getNextBookingID() throws SQLException {
 		if(sConnection == null)	{
 			createConnection();
@@ -275,16 +280,13 @@ public class ParkingDB {
 		Statement stmt = null;
 		String query = "SELECT COUNT(*) FROM SpaceBooking";
 		int count = 0;
-		
-			stmt = sConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			rs.next();
-			count = rs.getInt(1);
-		
-			if (stmt != null)	{
-				stmt.close();
-			}
-		
+		stmt = sConnection.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		rs.next();
+		count = rs.getInt(1);
+		if (stmt != null)	{
+			stmt.close();
+		}
 		return count + 1;
 	}
 	
