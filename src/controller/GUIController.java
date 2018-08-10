@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
 import modelObjects.*;
 import parkingDatabase.ParkingDB;
 
+/**
+ * A controller class for the GUI
+ */
 public class GUIController{
 	
 	//New database information components
@@ -43,8 +46,8 @@ public class GUIController{
 	@FXML private Label reserveTaken;
 
     /**
-     *
-     * @throws Exception
+     * Method called when the GUI starts
+     * @throws Exception database error occurs
      */
 	public void initialize() throws Exception {
 	    updateStaffList();
@@ -73,11 +76,11 @@ public class GUIController{
     }
 
     /**
-     *
-     * @throws Exception
+     * Updates the current list of staff. Used to populate the tableview
+     * @throws SQLException database error occurs
      */
     @FXML
-	public void updateStaffList() throws Exception {
+	public void updateStaffList() throws SQLException {
         List<Staff> staff = db.getStaff();
         staffTable.getItems().clear();
         for(Staff s : staff)    {
@@ -87,7 +90,11 @@ public class GUIController{
         }
     }
 
-    @FXML
+	/**
+	 * Updates the current list of spaces. Used to populate tableview
+	 * @throws SQLException database error
+	 */
+	@FXML
 	public void updateSpaceList() throws SQLException {
     	List<Space> space = db.getAvailableSpaces();
     	spaceTable.getItems().clear();
@@ -97,24 +104,21 @@ public class GUIController{
 			}
 		}
 	}
-	
-    
+
+	/**
+	 * Method called when adding a new lot to the database.
+	 */
 	@FXML
 	public void handleAddLot() {
 		ObservableList<Node> ol = lotBox.getChildren();
 		try {
-			
 			String name = ((TextField) ol.get(0)).getText();
 			String location = ((TextField) ol.get(1)).getText();
 			int cap = Integer.parseInt(((TextField) ol.get(2)).getText());
 			int floors = Integer.parseInt(((TextField) ol.get(3)).getText());
-			
 			Lot l = new Lot(name, location,cap, floors);
-			
 			db.addLot(l);
-			
 			clearFields(ol);
-			
 			alertBox("lot",true,false);
 		} catch (SQLException e) {
 			clearFields(ol);
@@ -124,20 +128,19 @@ public class GUIController{
 			alertBox("lot",false,true);
 		}
 	}
-	
+
+	/**
+	 * Method called when adding a new space to the database.
+	 */
 	@FXML
 	public void handleAddSpace() {
 		ObservableList<Node> ol = spaceBox.getChildren();
-		
 		int spaceNumber = Integer.parseInt(((TextField) ol.get(0)).getText());
 		String spaceType = ((TextField) ol.get(1)).getText();
 		String lotName = ((TextField) ol.get(2)).getText();
-		
 		Space s = new Space(spaceNumber, spaceType, lotName);
-		
 		try {
 			db.addSpace(s);
-			
 			clearFields(ol);
 			alertBox("space",true,false);
 		}  catch (SQLException e) {
@@ -147,9 +150,11 @@ public class GUIController{
 			clearFields(ol);
 			alertBox("space",false,false);
 		}
-		
 	}
-	
+
+	/**
+	 * Method called when adding staff to the database
+	 */
 	@FXML
 	public void handleAddStaff() {
 		ObservableList<Node> ol = staffBox.getChildren();
@@ -163,7 +168,6 @@ public class GUIController{
 		
 		try {
 			db.addStaff(s);
-			
 			clearFields(ol);
 			alertBox("staff",true,false);
 		}  catch (SQLException e) {
@@ -173,9 +177,12 @@ public class GUIController{
 			clearFields(ol);
 			alertBox("lot",false,false);
 		}
-		
 	}
-	
+
+	/**
+	 * Method called when assigning a staff member to a space
+	 * @throws SQLException database error
+	 */
 	@FXML
 	public void handleAssignSpace() throws SQLException {
 		String empNum = assignStaffNo.getText();
@@ -191,8 +198,12 @@ public class GUIController{
 		updateSpaceList();
 	}
 
+	/**
+	 * Method called when updating a staff members extension/license number
+	 * @throws SQLException invalid staff/database error
+	 */
 	@FXML
-    public void handleUpdateStaff() throws Exception {
+    public void handleUpdateStaff() throws SQLException {
         String id = idEntry.getText();
         String ext = extEntry.getText();
         String lic = licenseEntry.getText();
@@ -216,7 +227,11 @@ public class GUIController{
         }
     }
 
-    public void updateFreeCoveredSpots() throws SQLException {
+	/**
+	 * Updates the list of free covered spots. Used to populate tableview
+	 * @throws SQLException database error
+	 */
+	public void updateFreeCoveredSpots() throws SQLException {
     	List<CoveredSpace> free = db.getAvailableCoveredSpaces();
     	freeSpaceTable.getItems().clear();
     	for(CoveredSpace cs : free)	{
@@ -228,8 +243,8 @@ public class GUIController{
 	}
 	
 	/**
-	 * 
-	 * @throws SQLException
+	 * Method called when reserving a spot for a visitor
+	 * @throws SQLException database error
 	 */
 	@FXML
 	public void handleReserve() throws SQLException {
@@ -267,7 +282,8 @@ public class GUIController{
 	/**
 	 * Displays an alert box as to the success or failure of the operation
 	 * @param s string of the type of operation
-	 * @param b it was a success or failure
+	 * @param works it was a success or failure
+	 * @param sql true if its an sql error
 	 */
 	private void alertBox(String s,boolean works, boolean sql) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
