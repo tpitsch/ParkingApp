@@ -18,7 +18,7 @@ public class ParkingDB {
 	
 	/** The username to login to your database. */
 	private static String userName = "*";
-	
+
 	/** The password to login to your database. */
 	private static String password = "*";
 
