@@ -14,8 +14,8 @@ import modelObjects.StaffSpace;
 public class ParkingDB {
 	
 
-	private static String userName = "*";
-	private static String password = "*";
+	private static String userName = "tpitsch";
+	private static String password = "omRaic";
 	private static String serverName = "cssgate.insttech.washington.edu"; 
 	private static Connection sConnection;
 
@@ -37,23 +37,21 @@ public class ParkingDB {
 	 * @param lot the lot that needs to be added.
 	 * @throws Exception when SQL error occurs.
 	 */
-	public void addLot(Lot lot) throws Exception {
+	public void addLot(Lot lot) throws SQLException {
 		if (sConnection == null) {
 			createConnection();
 		}
 		String sql = "insert into Lot values " + "(?, ?, ?, ?); ";
 		PreparedStatement ps = null;
 		
-		try {
 			ps = sConnection.prepareStatement(sql);
 			ps.setString(1, lot.getName());
 			ps.setString(2, lot.getLocation());
 			ps.setInt(3,lot.getCapacity());
 			ps.setInt(4, lot.getFloors());
 			ps.executeUpdate();
-		}catch(SQLException e) {
-			//throw new Exception("Unable to add new Lot: " + e.getMessage());
-		}
+			
+		
 	}
 	
 	/**
@@ -61,7 +59,7 @@ public class ParkingDB {
 	 * @param space the space to be added
 	 * @throws SQLException
 	 */
-	public void addSpace(Space space) throws Exception {
+	public void addSpace(Space space) throws SQLException {
 		if (sConnection == null) {
 			createConnection();
 		}
@@ -69,15 +67,12 @@ public class ParkingDB {
 		String sql = "insert into Space values " + "(?, ?, ?); ";
 		PreparedStatement ps = null;
 		
-		try {
 			ps = sConnection.prepareStatement(sql);
 			ps.setInt(1, space.getSpaceNumber());
 			ps.setString(2, space.getSpaceType());
 			ps.setString(3, space.getLotName());
 			ps.executeUpdate();
-		}catch(SQLException e) {
-			//throw new Exception("Unable to add new Space: " + e.getMessage());
-		}
+		
 	}
 	
 	/**
@@ -85,7 +80,7 @@ public class ParkingDB {
 	 * @param staff new staff member to add
 	 * @throws Exception
 	 */
-	public void addStaff(Staff staff) throws Exception {
+	public void addStaff(Staff staff) throws SQLException {
 		if (sConnection == null) {
 			createConnection();
 		}
@@ -93,16 +88,13 @@ public class ParkingDB {
 		String sql = "insert into Staff values " + "(?, ?, ?, ?); ";
 		PreparedStatement ps = null;
 		
-		try {
 			ps = sConnection.prepareStatement(sql);
 			ps.setString(1, staff.getStaffName());
 			ps.setString(2, staff.getStaffNumber());
 			ps.setString(3, staff.getExt());
 			ps.setString(4, staff.getLicense());
 			ps.executeUpdate();
-		}catch(SQLException e) {
-			//throw new Exception("Unable to add new Space: " + e.getMessage());
-		}
+		
 	}
 
 	/**
@@ -130,18 +122,14 @@ public class ParkingDB {
 			sql = "UPDATE Staff SET telephoneExt = " + phone + " WHERE staffNumber = " + id;
 		}
 		PreparedStatement ps = null;
-		try {
+		
 			ps = sConnection.prepareStatement(sql);
-			//ps.setString(1, phone);
-			//ps.setString(2, license);
 			ps.executeUpdate();
-		}	catch(SQLException e)	{
-
-		}
+		
 	}
-	
-	//TODO test if that space is already assigned first
-	public boolean assignSpace(StaffSpace staffSpace) throws Exception {
+
+
+	public boolean assignSpace(StaffSpace staffSpace) throws SQLException {
 		if (sConnection == null) {
 			createConnection();
 		}
@@ -165,15 +153,15 @@ public class ParkingDB {
 		}
 		return false;
 	}
-	
-	//TODO add statements to allow staff to reserve a space for a visitor
+
+
 	public void reserveSpace(SpaceBooking sb) throws SQLException {
 		if(sConnection == null)	{
 			createConnection();
 		}
 		Statement stmt = null;
 		String query = "SELECT COUNT(*) as res FROM SpaceBooking";
-		try {
+		
 			stmt = sConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
@@ -190,14 +178,10 @@ public class ParkingDB {
 				ps.setString(5, sb.getDateOfVisit());
 				ps.executeUpdate();
 			}
-			
-		} catch (Exception e)	{
-
-		} finally {
 			if(stmt != null)	{
 				stmt.close();
 			}
-		}
+		
 		
 		
 	}
@@ -210,20 +194,18 @@ public class ParkingDB {
 		Statement stmt = null;
 		String query = "SELECT spaceNumber FROM Space WHERE spaceType = \"CoveredSpace\" AND " +
 								"spaceNumber NOT IN (SELECT spaceNumber FROM SpaceBooking)";
-		try {
+		
+		
 			stmt = sConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next())	{
 				int spaceNo = rs.getInt("spaceNumber");
 				space.add(new CoveredSpace(spaceNo, 0));
 			}
-		} catch (Exception e)	{
-
-		} finally {
+		
 			if(stmt != null)	{
 				stmt.close();
 			}
-		}
 		return space;
 		
 		
@@ -261,14 +243,14 @@ public class ParkingDB {
 	 * @return list of staff in database
 	 * @throws Exception
 	 */
-	public List<Staff> getStaff() throws Exception {
+	public List<Staff> getStaff() throws SQLException {
 		if(sConnection == null)	{
 			createConnection();
 		}
 		Statement stmt = null;
 		String query = "SELECT staffName, staffNumber, telephoneExt, vehicleLicenseNumber FROM Staff";
 		List<Staff> staff = new ArrayList<Staff>();
-		try {
+
 			stmt = sConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()) {
@@ -279,14 +261,10 @@ public class ParkingDB {
 				Staff s = new Staff(name, Integer.toString(number), Integer.toString(tele), license);		//I don't like that I have to cast the numbers to strings
 				staff.add(s);
 			}
-		}	catch (SQLException e)	{
-			e.printStackTrace();
-			throw new Exception("Unable to retrieve staff list: " + e.getMessage());
-		}	finally {
 			if (stmt != null)	{
 				stmt.close();
 			}
-		}
+		
 		return staff;
 	}
 
@@ -297,18 +275,16 @@ public class ParkingDB {
 		Statement stmt = null;
 		String query = "SELECT COUNT(*) FROM SpaceBooking";
 		int count = 0;
-		try {
+		
 			stmt = sConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
 			count = rs.getInt(1);
-		} catch (Exception e)	{
-
-		} finally {
+		
 			if (stmt != null)	{
 				stmt.close();
 			}
-		}
+		
 		return count + 1;
 	}
 	

@@ -19,17 +19,17 @@
                         <VBox fx:id="lotBox" layoutX="300.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <TextField />
-                              <TextField />
-                              <TextField />
-                              <TextField />
+                              <TextField translateY="10.0" />
+                              <TextField translateY="25.0" />
+                              <TextField translateY="40.0" />
                            </children>
                         </VBox>
                         <VBox layoutX="168.0" layoutY="62.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Location" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Capacity" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Floors" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" translateY="5.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Location" translateY="25.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Capacity" translateY="50.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Floors" translateY="75.0" />
                            </children>
                         </VBox>
                      </children>
@@ -44,15 +44,15 @@
                         <VBox layoutX="168.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Number" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Type" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Space Type" translateY="30.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lot Name" translateY="55.0" />
                            </children>
                         </VBox>
                         <VBox fx:id="spaceBox" layoutX="316.0" layoutY="61.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <TextField />
-                              <TextField />
-                              <TextField />
+                              <TextField translateY="15.0" />
+                              <TextField translateY="30.0" />
                            </children>
                         </VBox>
                      </children>
@@ -67,17 +67,17 @@
                         <VBox fx:id="staffBox" layoutX="316.0" layoutY="78.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <TextField />
-                              <TextField />
-                              <TextField />
-                              <TextField />
+                              <TextField translateY="15.0" />
+                              <TextField translateY="30.0" />
+                              <TextField translateY="40.0" />
                            </children>
                         </VBox>
                         <VBox layoutX="168.0" layoutY="78.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Extension" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="License" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number" translateY="30.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Extension" translateY="55.0" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="License" translateY="75.0" />
                            </children>
                         </VBox>
                      </children>

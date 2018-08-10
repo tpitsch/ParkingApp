@@ -1,27 +1,20 @@
 package controller;
 
-import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import modelObjects.*;
 import parkingDatabase.ParkingDB;
 
 public class GUIController{
 	
+	//New database information components
 	private ParkingDB db  = new ParkingDB();
 	@FXML private VBox lotBox;
 	@FXML private VBox spaceBox;
@@ -105,6 +98,7 @@ public class GUIController{
 		}
 	}
 	
+    
 	@FXML
 	public void handleAddLot() {
 		ObservableList<Node> ol = lotBox.getChildren();
@@ -120,8 +114,14 @@ public class GUIController{
 			db.addLot(l);
 			
 			clearFields(ol);
+			
+			alertBox("lot",true,false);
+		} catch (SQLException e) {
+			clearFields(ol);
+			alertBox("lot",false,true);
 		} catch (Exception e) {
 			clearFields(ol);
+			alertBox("lot",false,true);
 		}
 	}
 	
@@ -139,8 +139,13 @@ public class GUIController{
 			db.addSpace(s);
 			
 			clearFields(ol);
+			alertBox("space",true,false);
+		}  catch (SQLException e) {
+			clearFields(ol);
+			alertBox("space",false,true);
 		} catch (Exception e) {
 			clearFields(ol);
+			alertBox("space",false,false);
 		}
 		
 	}
@@ -160,8 +165,13 @@ public class GUIController{
 			db.addStaff(s);
 			
 			clearFields(ol);
+			alertBox("staff",true,false);
+		}  catch (SQLException e) {
+			clearFields(ol);
+			alertBox("lot",false,true);
 		} catch (Exception e) {
 			clearFields(ol);
+			alertBox("lot",false,false);
 		}
 		
 	}
@@ -174,6 +184,7 @@ public class GUIController{
 		try {
 			spaceTaken.setVisible(!db.assignSpace(ss));
 		} catch (Exception e) {
+			alertBox("space",false,true);
 		}
 		assignStaffNo.clear();
 		assignSpaceNo.clear();
@@ -216,11 +227,13 @@ public class GUIController{
 		bookingId.setText(Integer.toString(db.getNextBookingID()));
 	}
 	
-	
+	/**
+	 * 
+	 * @throws SQLException
+	 */
 	@FXML
 	public void handleReserve() throws SQLException {
 		//make a new booking
-		//db.reserveSpace();
 		String date = reserveDate.getValue().toString();
 		date.replace("/","-");
 		int space = Integer.parseInt(reserveSpace.getText());
@@ -241,10 +254,37 @@ public class GUIController{
 	}
 
 
+	/**
+	 * Clears the list of text fields of their input.
+	 * @param l the list of text fields that were used for input.
+	 */
 	private void clearFields(ObservableList<Node> l) {
 		for(int i = 0; i<l.size();i++) {
 			((TextField) l.get(i)).clear();
 		}
+	}
+	
+	/**
+	 * Displays an alert box as to the success or failure of the operation
+	 * @param s string of the type of operation
+	 * @param b it was a success or failure
+	 */
+	private void alertBox(String s,boolean works, boolean sql) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		if(works && !sql) {
+			alert.setTitle("It worked!");
+			alert.setHeaderText("The " + s + " has been added to the database");
+		}else if(!works && !sql){
+			alert.setAlertType(AlertType.WARNING);
+			alert.setTitle("It failed!");
+			alert.setHeaderText("The " + s + " was not added to the database");
+		}else if(sql) {
+			alert.setAlertType(AlertType.WARNING);
+			alert.setTitle("It failed!");
+			alert.setHeaderText("The " + s + " was not added to the database because it"
+					+ " already exists");
+		}
+		alert.showAndWait();
 	}
 }
 
